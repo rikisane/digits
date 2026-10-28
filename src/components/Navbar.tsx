@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useSession } from 'next-auth/react'; // v5 compatible
@@ -12,9 +13,11 @@ const NavBar: React.FC = () => {
   const currentUser = session?.user?.email;
   const role = session?.user?.role;
   return (
-    <Navbar bg="light" expand="lg">
+    // changed the navbar background to dark
+    <Navbar bg="dark" expand="lg">
       <Container>
-        <Navbar.Brand href="/">Next.js Application Template</Navbar.Brand>
+        {/* changed the navbar title to digits */}
+        <Navbar.Brand href="/">digits</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto justify-content-start">
