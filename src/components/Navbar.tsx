@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useSession } from 'next-auth/react'; // v5 compatible
@@ -23,8 +24,9 @@ const NavBar: React.FC = () => {
                 <Nav.Link id="add-stuff-nav" href="/add" active={pathName === '/add'}>
                   Add Stuff
                 </Nav.Link>
+                {/* changed the link name to list contacts */}
                 <Nav.Link id="list-stuff-nav" href="/list" active={pathName === '/list'}>
-                  List Stuff
+                  List Contacts
                 </Nav.Link>
               </>
             )}
