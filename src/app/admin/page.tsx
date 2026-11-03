@@ -1,5 +1,6 @@
-import { Col, Container, Row, Table } from 'react-bootstrap';
-import StuffItemAdmin from '@/components/StuffItemAdmin';
+
+import { Col, Container, Row } from 'react-bootstrap';
+import ContactCardAdmin from '@/components/ContactCardAdmin'; // added the admin contact card
 import { prisma } from '@/lib/prisma';
 import { adminProtectedPage } from '@/lib/page-protection';
 import { auth } from '@/lib/auth';
@@ -11,53 +12,26 @@ const AdminPage = async () => {
       user: { email: string; id: string; name: string };
     } | null,
   );
-  const stuff = await prisma.stuff.findMany({});
-  const users = await prisma.user.findMany({});
+
+  // gets all contacts from the database
+  const contacts = await prisma.contact.findMany({});
 
   return (
     <main>
       <Container id="list" fluid className="py-3">
         <Row>
           <Col>
-            <h1>List Stuff Admin</h1>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Quantity</th>
-                  <th>Condition</th>
-                  <th>Owner</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {stuff.map((item) => (
-                  <StuffItemAdmin key={item.id} {...item} />
-                ))}
-              </tbody>
-            </Table>
+            <h1 className="text-center">List Contacts (Admin)</h1>
           </Col>
         </Row>
-        <Row>
-          <Col>
-            <h1>List Users Admin</h1>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Email</th>
-                  <th>Role</th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((user) => (
-                  <tr key={user.id}>
-                    <td>{user.email}</td>
-                    <td>{user.role}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          </Col>
+
+        {/* shows all contacts and their owners */}
+        <Row xs={1} md={2} lg={3} className="g-4">
+          {contacts.map((contact) => (
+            <Col key={`Contact-${contact.id}`}>
+              <ContactCardAdmin contact={contact} />
+            </Col>
+          ))}
         </Row>
       </Container>
     </main>
