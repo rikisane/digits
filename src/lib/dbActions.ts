@@ -1,10 +1,11 @@
+
 'use server';
 
-import { Condition } from '@prisma/client';
-import { Stuff } from '@prisma/client';
+import { Condition, Contact, Stuff } from '@prisma/client';
 import { hash } from 'bcrypt';
 import { redirect } from 'next/navigation';
 import { prisma } from './prisma';
+import { auth } from './auth';
 
 /**
  * Adds a new stuff to the database.
@@ -92,4 +93,70 @@ export async function changePassword(credentials: { email: string; password: str
       password,
     },
   });
+}
+
+// added this to save new contacts
+export async function addContact(contact: {
+  firstName: string;
+  lastName: string;
+  address: string;
+  image: string;
+  description: string;
+  owner: string;
+}) {
+  const session = await auth();
+  const currentUser = session?.user?.email;
+
+  // make sure the user is signed in
+  if (!currentUser) {
+    redirect('/auth/signin');
+  }
+
+  await prisma.contact.create({
+    data: {
+      firstName: contact.firstName,
+      lastName: contact.lastName,
+      address: contact.address,
+      image: contact.image,
+      description: contact.description,
+      owner: currentUser,
+    },
+  });
+
+  // go back to the list after adding
+  redirect('/list');
+}
+
+// added this to update contacts already in the database
+export async function editContact(contact: Contact) {
+  const session = await auth();
+  const currentUser = session?.user?.email;
+
+  // make sure the user is signed in
+  if (!currentUser) {
+    redirect('/auth/signin');
+  }
+
+  // only update contacts owned by this user
+  const existingContact = await prisma.contact.findUnique({
+    where: { id: contact.id },
+  });
+
+  if (!existingContact || existingContact.owner !== currentUser) {
+    throw new Error('Contact not found or access denied');
+  }
+
+  await prisma.contact.update({
+    where: { id: contact.id },
+    data: {
+      firstName: contact.firstName,
+      lastName: contact.lastName,
+      address: contact.address,
+      image: contact.image,
+      description: contact.description,
+    },
+  });
+
+  // go back to the list after editing
+  redirect('/list');
 }
