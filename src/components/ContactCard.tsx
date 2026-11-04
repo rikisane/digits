@@ -1,6 +1,8 @@
+
 'use client';
 
 import { Card, Image } from 'react-bootstrap';
+import Link from 'next/link'; // added this for the edit link
 import type { Contact } from '@/lib/validationSchemas';
 
 // added a card to show each contact's info
@@ -14,7 +16,9 @@ const ContactCard = ({ contact }: { contact: Contact }) => (
         alt={`${contact.firstName} ${contact.lastName}`}
       />
       <Card.Title>
-        {contact.firstName} {contact.lastName}
+        {contact.firstName}
+        {' '}
+        {contact.lastName}
       </Card.Title>
       <Card.Subtitle className="text-muted">
         {contact.address}
@@ -25,6 +29,13 @@ const ContactCard = ({ contact }: { contact: Contact }) => (
     <Card.Body>
       <Card.Text>{contact.description}</Card.Text>
     </Card.Body>
+
+    {/* added the edit link for saved contacts */}
+    {contact.id !== undefined && (
+      <Card.Footer>
+        <Link href={`/edit/${contact.id}`}>Edit</Link>
+      </Card.Footer>
+    )}
   </Card>
 );
 

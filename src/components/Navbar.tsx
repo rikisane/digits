@@ -12,6 +12,7 @@ const NavBar: React.FC = () => {
   if (status === 'loading') return null;
   const currentUser = session?.user?.email;
   const role = session?.user?.role;
+
   return (
     <Navbar bg="light" expand="lg">
       <Container>
@@ -21,9 +22,11 @@ const NavBar: React.FC = () => {
           <Nav className="me-auto justify-content-start">
             {currentUser && (
               <>
+                {/* changed add stuff to add contact */}
                 <Nav.Link id="add-stuff-nav" href="/add" active={pathName === '/add'}>
-                  Add Stuff
+                  Add Contact
                 </Nav.Link>
+
                 {/* changed the link name to list contacts */}
                 <Nav.Link id="list-stuff-nav" href="/list" active={pathName === '/list'}>
                   List Contacts
