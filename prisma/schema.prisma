@@ -1,9 +1,6 @@
 
- // This is your Prisma schema file,
- // learn more about it in the docs: https://pris.ly/d/prisma-schema
-
- // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
- // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
   provider = "prisma-client-js"
@@ -40,7 +37,7 @@ model Stuff {
   owner     String
 }
 
-// added the contact model to store contact information
+// keeping the contact model and adding a notes relationship
 model Contact {
   id          Int    @id @default(autoincrement())
   firstName   String
@@ -49,4 +46,17 @@ model Contact {
   image       String
   description String
   owner       String
+  notes       Note[] // added so each contact can have multiple notes
+}
+
+// added this model to store notes for each contact
+model Note {
+  id        Int      @id @default(autoincrement())
+  contactId Int
+  note      String
+  owner     String
+  createdAt DateTime @default(now()) // automatically saves when the note was created
+
+  // connects each note to its contact
+  Contact   Contact  @relation(fields: [contactId], references: [id])
 }

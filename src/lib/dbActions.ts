@@ -160,3 +160,39 @@ export async function editContact(contact: Contact) {
   // go back to the list after editing
   redirect('/list');
 }
+
+// added this to save timestamped notes for contacts
+export async function addNote(note: {
+  note: string;
+  contactId: number;
+  owner: string;
+}) {
+  const session = await auth();
+  const currentUser = session?.user?.email;
+
+  // make sure the user is signed in
+  if (!currentUser) {
+    redirect('/auth/signin');
+  }
+
+  // make sure the contact belongs to the signed-in user
+  const contact = await prisma.contact.findUnique({
+    where: { id: note.contactId },
+  });
+
+  if (!contact || contact.owner !== currentUser) {
+    throw new Error('Contact not found or access denied');
+  }
+
+  // save the note and connect it to the right contact
+  await prisma.note.create({
+    data: {
+      note: note.note,
+      contactId: note.contactId,
+      owner: currentUser,
+    },
+  });
+
+  // go back to the list after saving the note
+  redirect('/list');
+}

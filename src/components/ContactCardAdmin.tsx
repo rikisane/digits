@@ -1,11 +1,12 @@
 
 'use client';
 
-import { Card, Image } from 'react-bootstrap';
-import type { Contact } from '@/lib/validationSchemas';
+import { Card, Image, ListGroup } from 'react-bootstrap';
+import type { Contact, Note } from '@prisma/client';
+import NoteItem from '@/components/NoteItem';
 
-// added an admin card that also shows who owns each contact
-const ContactCardAdmin = ({ contact }: { contact: Contact & { owner: string } }) => (
+// updated the admin card to accept notes too
+const ContactCardAdmin = ({ contact, notes }: { contact: Contact; notes: Note[] }) => (
   <Card className="h-100">
     {/* showing the contact's picture and name */}
     <Card.Header>
@@ -15,7 +16,9 @@ const ContactCardAdmin = ({ contact }: { contact: Contact & { owner: string } })
         alt={`${contact.firstName} ${contact.lastName}`}
       />
       <Card.Title>
-        {contact.firstName} {contact.lastName}
+        {contact.firstName}
+        {' '}
+        {contact.lastName}
       </Card.Title>
       <Card.Subtitle className="text-muted">
         {contact.address}
@@ -26,9 +29,16 @@ const ContactCardAdmin = ({ contact }: { contact: Contact & { owner: string } })
     <Card.Body>
       <Card.Text>{contact.description}</Card.Text>
 
-      {/* added the owner's email for admins */}
+      {/* keeping the owner's email for admins */}
       <p className="blockquote-footer">{contact.owner}</p>
     </Card.Body>
+
+    {/* added this to show notes belonging to this contact */}
+    <ListGroup variant="flush">
+      {notes.map((note) => (
+        <NoteItem key={note.id} note={note} />
+      ))}
+    </ListGroup>
   </Card>
 );
 

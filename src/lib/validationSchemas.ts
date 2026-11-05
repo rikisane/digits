@@ -47,3 +47,10 @@ export const EditContactSchema = Yup.object({
   description: Yup.string().required(),
   owner: Yup.string().required(),
 });
+
+// added this to check the note before saving it
+export const AddNoteSchema = Yup.object({
+  note: Yup.string().required(),
+  contactId: Yup.number().integer().positive().required(),
+  owner: Yup.string().required(),
+});

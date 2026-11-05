@@ -1,6 +1,6 @@
 
 import { Col, Container, Row } from 'react-bootstrap';
-import { prisma } from '@/lib/prisma'; // added prisma to get contacts from the database
+import { prisma } from '@/lib/prisma';
 import { loggedInProtectedPage } from '@/lib/page-protection';
 import { auth } from '@/lib/auth';
 import ContactCard from '@/components/ContactCard';
@@ -25,6 +25,19 @@ const ListPage = async () => {
     },
   });
 
+  // added this to get all notes belonging to the logged-in user
+  const notes = await prisma.note.findMany({
+    where: {
+      owner,
+      Contact: {
+        owner,
+      },
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+
   return (
     <main>
       <Container id="list" fluid className="py-3">
@@ -38,7 +51,11 @@ const ListPage = async () => {
         <Row xs={1} md={2} lg={3} className="g-4">
           {contacts.map((contact) => (
             <Col key={`Contact-${contact.id}`}>
-              <ContactCard contact={contact} />
+              {/* only passes notes that belong to this contact */}
+              <ContactCard
+                contact={contact}
+                notes={notes.filter((note) => note.contactId === contact.id)}
+              />
             </Col>
           ))}
         </Row>
