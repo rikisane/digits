@@ -1,17 +1,22 @@
+
 import { Col, Container } from 'react-bootstrap';
 
-/** The Footer appears at the bottom of every page. Rendered by the App Layout component. */
+/** The footer for the Digits application. */
 const Footer = () => (
   <footer className="mt-auto py-3 bg-light">
     <Container>
       <Col className="text-center">
-        Department of Information and Computer Sciences
+        Digits - Contact Management Application
         <br />
-        University of Hawaii
+        ICS 314 - University of Hawaii at Manoa
         <br />
-        Honolulu, HI 96822
-        <br />
-        <a href="http://ics-software-engineering.github.io/nextjs-application-template">Template Home Page</a>
+        <a
+          href="https://github.com/rikisane/digits"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub Repository
+        </a>
       </Col>
     </Container>
   </footer>

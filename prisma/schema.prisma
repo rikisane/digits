@@ -1,7 +1,4 @@
 
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -22,22 +19,7 @@ model User {
   role     Role   @default(USER)
 }
 
-enum Condition {
-  excellent
-  good
-  fair
-  poor
-}
-
-model Stuff {
-  id        Int       @id @default(autoincrement())
-  name      String
-  quantity  Int
-  condition Condition @default(good)
-  owner     String
-}
-
-// keeping the contact model and adding a notes relationship
+// keeping the contact model and its notes relationship
 model Contact {
   id          Int    @id @default(autoincrement())
   firstName   String
@@ -46,7 +28,7 @@ model Contact {
   image       String
   description String
   owner       String
-  notes       Note[] // added so each contact can have multiple notes
+  notes       Note[]
 }
 
 // added this model to store notes for each contact
@@ -55,7 +37,7 @@ model Note {
   contactId Int
   note      String
   owner     String
-  createdAt DateTime @default(now()) // automatically saves when the note was created
+  createdAt DateTime @default(now())
 
   // connects each note to its contact
   Contact   Contact  @relation(fields: [contactId], references: [id])

@@ -16,25 +16,22 @@ const NavBar: React.FC = () => {
   return (
     <Navbar bg="light" expand="lg">
       <Container>
-        <Navbar.Brand href="/">Next.js Application Template</Navbar.Brand>
+        <Navbar.Brand href="/">Digits</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto justify-content-start">
             {currentUser && (
               <>
-                {/* changed add stuff to add contact */}
-                <Nav.Link id="add-stuff-nav" href="/add" active={pathName === '/add'}>
+                <Nav.Link id="add-contact-nav" href="/add" active={pathName === '/add'}>
                   Add Contact
                 </Nav.Link>
-
-                {/* changed the link name to list contacts */}
-                <Nav.Link id="list-stuff-nav" href="/list" active={pathName === '/list'}>
+                <Nav.Link id="list-contacts-nav" href="/list" active={pathName === '/list'}>
                   List Contacts
                 </Nav.Link>
               </>
             )}
             {currentUser && role === 'ADMIN' && (
-              <Nav.Link id="admin-stuff-nav" href="/admin" active={pathName === '/admin'}>
+              <Nav.Link id="admin-contacts-nav" href="/admin" active={pathName === '/admin'}>
                 Admin
               </Nav.Link>
             )}

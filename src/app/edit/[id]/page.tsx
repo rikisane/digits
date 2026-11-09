@@ -6,7 +6,6 @@ import { prisma } from '@/lib/prisma';
 import { auth } from '@/lib/auth';
 import EditContactForm from '@/components/EditContactForm';
 
-// changed this page to load contacts instead of stuff
 export default async function EditContactPage({
   params,
 }: {
@@ -14,7 +13,7 @@ export default async function EditContactPage({
 }) {
   const { id } = await params;
 
-  // Protect the page, only logged in users can access it.
+  // only logged in users can access this page
   const session = await auth();
   loggedInProtectedPage(
     session as {
