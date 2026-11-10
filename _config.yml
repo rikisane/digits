@@ -1,8 +1,9 @@
-title: nextjs-application-template
-description: A template for quickly starting Next.js application development
+
+title: Digits
+description: A Contact Management Application for ICS 314
 google_analytics:
 show_downloads: true
 theme: jekyll-theme-cayman
 
-gems:
+plugins:
   - jekyll-mentions
