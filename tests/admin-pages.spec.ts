@@ -1,49 +1,55 @@
+
 import { test, expect } from './auth-utils';
 
 test.slow();
+
 test('test access to admin page', async ({ getUserPage }) => {
-  // Call the getUserPage fixture with admin signin info to get authenticated session for admin
+  // sign in with the admin account
   const adminPage = await getUserPage('admin@foo.com', 'changeme');
 
-  // Navigate to the home page and wait for post-login indicator
+  // go to the home page
   await adminPage.goto('http://localhost:3000/');
+
+  // check that the admin is signed in
   await expect(
-    adminPage.getByRole('button', { name: 'admin@foo.com' })
+    adminPage.getByRole('button', { name: 'admin@foo.com' }),
   ).toBeVisible({ timeout: 10000 });
 
-  // Check for navigation elements
+  // check the digits navigation links
   await expect(
-    adminPage.getByRole('link', { name: 'Next.js Application Template' })
-  ).toBeVisible({ timeout: 5000 });
-  await expect(
-    adminPage.getByRole('link', { name: 'Add Stuff' })
-  ).toBeVisible({ timeout: 5000 });
-  await expect(
-    adminPage.getByRole('link', { name: 'List Stuff' })
-  ).toBeVisible({ timeout: 5000 });
-  await expect(
-    adminPage.getByRole('link', { name: 'Admin' })
-  ).toBeVisible({ timeout: 5000 });
+    adminPage.getByRole('link', { name: 'Digits' }),
+  ).toBeVisible();
 
-  // Test Add Stuff adminPage
-  await adminPage.getByRole('link', { name: 'Add Stuff' }).click();
   await expect(
-    adminPage.getByRole('heading', { name: 'Add Stuff' })
-  ).toBeVisible({ timeout: 5000 });
+    adminPage.getByRole('link', { name: 'Add Contact' }),
+  ).toBeVisible();
 
-  // Test List Stuff adminPage
-  await adminPage.getByRole('link', { name: 'List Stuff' }).click();
   await expect(
-    adminPage.getByRole('heading', { name: 'Stuff' })
-  ).toBeVisible({ timeout: 5000 });
+    adminPage.getByRole('link', { name: 'List Contacts' }),
+  ).toBeVisible();
 
-  // Test Admin adminPage
+  await expect(
+    adminPage.getByRole('link', { name: 'Admin' }),
+  ).toBeVisible();
+
+  // check the add contact page
+  await adminPage.getByRole('link', { name: 'Add Contact' }).click();
+  await expect(adminPage).toHaveURL(/\/add$/);
+
+  // check the list contacts page
+  await adminPage.getByRole('link', { name: 'List Contacts' }).click();
+  await expect(adminPage).toHaveURL(/\/list$/);
+
+  // check the admin page
   await adminPage.getByRole('link', { name: 'Admin' }).click();
-  await expect(
-    adminPage.getByRole('heading', { name: 'List Stuff Admin' })
-  ).toBeVisible({ timeout: 5000 });
-  await expect(
-    adminPage.getByRole('heading', { name: 'List Users Admin' })
-  ).toBeVisible({ timeout: 5000 });
+  await expect(adminPage).toHaveURL(/\/admin$/);
 
+  // make sure the admin can see contacts from different users
+  await expect(
+    adminPage.getByText('Philip Johnson').first(),
+  ).toBeVisible();
+
+  await expect(
+    adminPage.getByText('Kim Binsted').first(),
+  ).toBeVisible();
 });
