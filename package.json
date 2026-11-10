@@ -1,3 +1,4 @@
+
 {
   "name": "nextjs-application-template-s26",
   "version": "0.1.0",
@@ -8,7 +9,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed": "npx tsx src/seed.ts",
+    "seed": "npx prisma db seed",
     "playwright": "npx playwright test"
   },
   "dependencies": {
